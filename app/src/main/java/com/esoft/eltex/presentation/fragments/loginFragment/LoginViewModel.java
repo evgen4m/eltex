@@ -1,0 +1,62 @@
+package com.esoft.eltex.presentation.fragments.loginFragment;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
+import com.esoft.eltex.data.PreferenceDataSource;
+import com.esoft.eltex.domain.LoginRepository;
+import com.esoft.eltex.domain.TokenModel;
+
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
+
+public class LoginViewModel extends ViewModel {
+
+    private LoginRepository loginRepository;
+    private PreferenceDataSource preferenceDataSource;
+
+    MutableLiveData<TokenModel> tokenModelMutableLiveData = new MutableLiveData<>();
+    MutableLiveData<Integer> codeLiveData = new MutableLiveData<>();
+
+    public LoginViewModel(LoginRepository loginRepository, PreferenceDataSource preferenceDataSource) {
+        this.loginRepository = loginRepository;
+        this.preferenceDataSource = preferenceDataSource;
+    }
+
+
+    void loginIn(String base, String grantType, String username, String password) {
+        loginRepository.loginIn(base, grantType, username, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<TokenModel>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Response<TokenModel> tokenModel) {
+                        if (tokenModel.body() != null) {
+                            tokenModelMutableLiveData.setValue(tokenModel.body());
+                            preferenceDataSource.addPrefString("token", tokenModel.body().getToken());
+                            preferenceDataSource.addPrefString("tokenType", tokenModel.body().getTokenType());
+                        }
+                        preferenceDataSource.addPrefInt("code", tokenModel.code());
+                        codeLiveData.postValue(preferenceDataSource.getPrefInt("code"));
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    public void getCode() {
+        codeLiveData.setValue(preferenceDataSource.getPrefInt("code"));
+    }
+}

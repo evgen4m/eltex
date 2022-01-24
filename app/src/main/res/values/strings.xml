@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Eltex</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="loginIn">Войти</string>
+
+    <string name="username_format">Username: %1$s</string>
+    <string name="roleId_format">RoleId: %1$s</string>
+    <string name="email_format">Email: %1$s</string>
+    <string name="grant_type">password</string>
 </resources>
