@@ -12,8 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.esoft.eltex.R;
@@ -24,10 +22,7 @@ public class LoginFragment extends Fragment{
 
     private Button loginInBtn;
     private TextView loginText, passwordText;
-    private NavController navController;
     private LoginViewModel viewModel;
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +39,6 @@ public class LoginFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
         loginInBtn = view.findViewById(R.id.loginInBtn);
         loginText = view.findViewById(R.id.loginText);

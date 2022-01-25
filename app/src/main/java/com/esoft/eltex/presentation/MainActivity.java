@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
 
 import com.esoft.eltex.R;
 import com.esoft.eltex.data.PreferenceDataSource;
@@ -19,9 +17,6 @@ public class MainActivity extends AppCompatActivity {
     private NavHostFragment navHostFragment;
     private PreferenceDataSource preferenceDataSource;
 
-    Handler handler;
-
-    @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
