@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.esoft.eltex.data.PreferenceDataSource;
 import com.esoft.eltex.domain.LoginRepository;
 import com.esoft.eltex.domain.UserModel;
 
@@ -17,20 +16,15 @@ import retrofit2.Response;
 public class DetailViewModel extends ViewModel {
 
     private LoginRepository loginRepository;
-    private PreferenceDataSource preferenceDataSource;
 
     MutableLiveData<UserModel> userModelMutableLiveData = new MutableLiveData<>();
-    MutableLiveData<Integer> codeLiveData = new MutableLiveData<>();
 
-    public DetailViewModel(LoginRepository loginRepository, PreferenceDataSource preferenceDataSource) {
+    public DetailViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
-        this.preferenceDataSource = preferenceDataSource;
     }
 
     public void getUserInfo() {
-        String tokenType = preferenceDataSource.getPrefString("tokenType");
-        String token = preferenceDataSource.getPrefString("token");
-        loginRepository.getUserInfo(tokenType + token)
+        loginRepository.getUserInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<UserModel>>() {
@@ -44,7 +38,6 @@ public class DetailViewModel extends ViewModel {
                         if (userModelResponse.body() != null) {
                             userModelMutableLiveData.setValue(userModelResponse.body());
                         }
-                        preferenceDataSource.addPrefInt("code", userModelResponse.code());
                     }
 
                     @Override
@@ -53,9 +46,4 @@ public class DetailViewModel extends ViewModel {
                     }
                 });
     }
-
-     void checkCode() {
-        codeLiveData.setValue(preferenceDataSource.getPrefInt("code"));
-    }
-
 }

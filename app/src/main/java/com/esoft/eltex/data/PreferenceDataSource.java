@@ -28,26 +28,19 @@ public class PreferenceDataSource {
         editor.commit();
     }
 
-    public void addPrefInt(String name, int value) {
-        if( settings == null ){
-            init();
-        }
-        editor.putInt(name, value);
-        editor.commit();
-    }
-
-    public int getPrefInt(String name) {
-        if( settings == null ){
-            init();
-        }
-        return settings.getInt(name,0);
-    }
-
     public String getPrefString(String name) {
         if( settings == null ){
             init();
         }
         return settings.getString(name, null);
+    }
+
+    public void clearPref() {
+        if(settings == null) {
+            init();
+        }
+        editor.clear();
+        editor.commit();
     }
 
 

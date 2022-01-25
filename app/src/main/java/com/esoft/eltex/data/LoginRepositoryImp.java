@@ -20,8 +20,8 @@ public class LoginRepositoryImp implements LoginRepository {
     }
 
     @Override
-    public Single<Response<TokenModel>> loginIn(String base, String grantType, String username, String password) {
-        return eltexApi.loginIn(base, grantType, username, password).map(new Function<Response<TokenModel>, Response<TokenModel>>() {
+    public Single<Response<TokenModel>> loginIn(String grantType, String username, String password) {
+        return eltexApi.loginIn(grantType, username, password).map(new Function<Response<TokenModel>, Response<TokenModel>>() {
              @Override
              public Response<TokenModel> apply(@NonNull Response<TokenModel> tokenModelResponse) throws Exception {
                 return tokenModelResponse;
@@ -30,8 +30,8 @@ public class LoginRepositoryImp implements LoginRepository {
     }
 
     @Override
-    public Single<Response<UserModel>> getUserInfo(String token) {
-        return eltexApi.getUser(token).map(new Function<Response<UserModel>, Response<UserModel>>() {
+    public Single<Response<UserModel>> getUserInfo() {
+        return eltexApi.getUser().map(new Function<Response<UserModel>, Response<UserModel>>() {
             @Override
             public Response<UserModel> apply(@NonNull Response<UserModel> userModelResponse) throws Exception {
                 return userModelResponse;

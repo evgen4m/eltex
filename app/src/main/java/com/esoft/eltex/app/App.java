@@ -2,15 +2,12 @@ package com.esoft.eltex.app;
 
 import android.app.Application;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
-import com.esoft.eltex.R;
 import com.esoft.eltex.data.EltexApi;
 import com.esoft.eltex.data.LoginRepositoryImp;
 import com.esoft.eltex.data.PreferenceDataSource;
 import com.esoft.eltex.domain.LoginRepository;
 import com.google.gson.GsonBuilder;
+
 
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
@@ -26,15 +23,19 @@ public class App extends Application {
     public PreferenceDataSource preferenceDataSource;
     public Retrofit retrofit;
 
+    private ServiceInterceptor serviceInterceptor;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
+        serviceInterceptor = new ServiceInterceptor(this);
+
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-
         OkHttpClient.Builder client = new OkHttpClient.Builder()
+                .addInterceptor(serviceInterceptor)
                 .addInterceptor(interceptor);
 
         retrofit = new Retrofit.Builder()
@@ -46,6 +47,7 @@ public class App extends Application {
 
         loginRepository = new LoginRepositoryImp(retrofit.create(EltexApi.class));
         preferenceDataSource = new PreferenceDataSource(this);
+
 
     }
 }

@@ -20,7 +20,6 @@ public class LoginViewModel extends ViewModel {
     private PreferenceDataSource preferenceDataSource;
 
     MutableLiveData<TokenModel> tokenModelMutableLiveData = new MutableLiveData<>();
-    MutableLiveData<Integer> codeLiveData = new MutableLiveData<>();
 
     public LoginViewModel(LoginRepository loginRepository, PreferenceDataSource preferenceDataSource) {
         this.loginRepository = loginRepository;
@@ -28,8 +27,8 @@ public class LoginViewModel extends ViewModel {
     }
 
 
-    void loginIn(String base, String grantType, String username, String password) {
-        loginRepository.loginIn(base, grantType, username, password)
+    void loginIn(String grantType, String username, String password) {
+        loginRepository.loginIn(grantType, username, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<TokenModel>>() {
@@ -45,8 +44,6 @@ public class LoginViewModel extends ViewModel {
                             preferenceDataSource.addPrefString("token", tokenModel.body().getToken());
                             preferenceDataSource.addPrefString("tokenType", tokenModel.body().getTokenType());
                         }
-                        preferenceDataSource.addPrefInt("code", tokenModel.code());
-                        codeLiveData.postValue(preferenceDataSource.getPrefInt("code"));
                     }
 
                     @Override
@@ -54,9 +51,5 @@ public class LoginViewModel extends ViewModel {
                         e.printStackTrace();
                     }
                 });
-    }
-
-    public void getCode() {
-        codeLiveData.setValue(preferenceDataSource.getPrefInt("code"));
     }
 }
