@@ -19,13 +19,10 @@ public class LoginViewModel extends ViewModel {
     private LoginRepository loginRepository;
     private PreferenceDataSource preferenceDataSource;
 
-    MutableLiveData<TokenModel> tokenModelMutableLiveData = new MutableLiveData<>();
-
     public LoginViewModel(LoginRepository loginRepository, PreferenceDataSource preferenceDataSource) {
         this.loginRepository = loginRepository;
         this.preferenceDataSource = preferenceDataSource;
     }
-
 
     void loginIn(String grantType, String username, String password) {
         loginRepository.loginIn(grantType, username, password)
@@ -40,7 +37,6 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onSuccess(@NonNull Response<TokenModel> tokenModel) {
                         if (tokenModel.body() != null) {
-                            tokenModelMutableLiveData.setValue(tokenModel.body());
                             preferenceDataSource.addPrefString("token", tokenModel.body().getToken());
                             preferenceDataSource.addPrefString("tokenType", tokenModel.body().getTokenType());
                         }

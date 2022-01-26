@@ -18,25 +18,23 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class App extends Application {
 
-    private final String url = "http://smart.eltex-co.ru:8271/api/v1/";
+    private static final String url = "http://smart.eltex-co.ru:8271/api/v1/";
     public LoginRepository loginRepository;
     public PreferenceDataSource preferenceDataSource;
     public Retrofit retrofit;
-
-    private ServiceInterceptor serviceInterceptor;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        serviceInterceptor = new ServiceInterceptor(this);
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient.Builder client = new OkHttpClient.Builder()
-                .addInterceptor(serviceInterceptor)
+                .addInterceptor(new AuthorizationInterceptor(this))
                 .addInterceptor(interceptor);
+
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(url)

@@ -10,12 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.esoft.eltex.R;
-import com.esoft.eltex.domain.TokenModel;
 
 
 public class LoginFragment extends Fragment{
@@ -43,15 +40,6 @@ public class LoginFragment extends Fragment{
         loginInBtn = view.findViewById(R.id.loginInBtn);
         loginText = view.findViewById(R.id.loginText);
         passwordText = view.findViewById(R.id.passwordText);
-
-        viewModel.tokenModelMutableLiveData.observe(getViewLifecycleOwner(), new Observer<TokenModel>() {
-            @Override
-            public void onChanged(TokenModel tokenModel) {
-                if (tokenModel.getToken() != null) {
-                    NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_detailInfoFragment);
-                }
-            }
-        });
 
         onClick();
     }
