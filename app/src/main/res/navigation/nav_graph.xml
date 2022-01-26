@@ -12,10 +12,19 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_detailInfoFragment"
-            app:destination="@id/detailInfoFragment" />
+            app:destination="@id/detailInfoFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@+id/nav_graph"/>
     </fragment>
     <fragment
         android:id="@+id/detailInfoFragment"
         android:name="com.esoft.eltex.presentation.fragments.detailInfoFragment.DetailInfoFragment"
-        android:label="DetailInfoFragment" />
+        android:label="DetailInfoFragment" >
+        <action
+            android:id="@+id/action_detailInfoFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@+id/nav_graph"/>
+    </fragment>
+
 </navigation>

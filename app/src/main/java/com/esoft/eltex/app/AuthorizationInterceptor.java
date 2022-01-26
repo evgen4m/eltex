@@ -6,7 +6,10 @@ import android.os.Looper;
 import android.util.Base64;
 import android.widget.Toast;
 
+
 import com.esoft.eltex.data.PreferenceDataSource;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -14,7 +17,8 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class ServiceInterceptor implements Interceptor {
+public class AuthorizationInterceptor implements Interceptor {
+
 
     private String finalToken = null;
 
@@ -25,7 +29,7 @@ public class ServiceInterceptor implements Interceptor {
     private static final String BASIC = "Basic ";
     private static final String ACP = "android-client:password";
 
-    public ServiceInterceptor(Context context) {
+    public AuthorizationInterceptor(Context context) {
         this.context = context;
         preferenceDataSource = new PreferenceDataSource(context);
     }
@@ -48,21 +52,21 @@ public class ServiceInterceptor implements Interceptor {
             public void run() {
                 switch (response.code()) {
                     case 200:
-                        Toast.makeText(context, "Успешная аутентификация", Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new ErrorMessageEvent("200"));
                         break;
                     case 401:
-                        Toast.makeText(context, "Ошибка аутентификации", Toast.LENGTH_SHORT).show();
-                        preferenceDataSource.clearPref();
+                        EventBus.getDefault().post(new ErrorMessageEvent("401"));
                         break;
                     case 404:
-                        Toast.makeText(context, "Данные не найдены", Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new ErrorMessageEvent("404"));
                         break;
                     case 400:
-                        Toast.makeText(context, "Ошибка запроса", Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new ErrorMessageEvent("400"));
                         break;
                 }
             }
         });
+
         return response;
     }
 }

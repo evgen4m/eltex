@@ -62,8 +62,6 @@ public class DetailInfoFragment extends Fragment {
                     email.setText(getString(R.string.email_format, userModel.getEmail()));
                     detailAdapter.setAdapterList(userModel.getListPermissions());
                     recyclerView.setAdapter(detailAdapter);
-                }else {
-                    NavHostFragment.findNavController(DetailInfoFragment.this).navigateUp();
                 }
             }
         });

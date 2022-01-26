@@ -23,20 +23,18 @@ public class App extends Application {
     public PreferenceDataSource preferenceDataSource;
     public Retrofit retrofit;
 
-    private ServiceInterceptor serviceInterceptor;
-
     @Override
     public void onCreate() {
         super.onCreate();
 
-        serviceInterceptor = new ServiceInterceptor(this);
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient.Builder client = new OkHttpClient.Builder()
-                .addInterceptor(serviceInterceptor)
+                .addInterceptor(new AuthorizationInterceptor(this))
                 .addInterceptor(interceptor);
+
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(url)
