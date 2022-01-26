@@ -1,7 +1,6 @@
 package com.esoft.eltex.presentation.fragments.loginFragment;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.esoft.eltex.data.PreferenceDataSource;

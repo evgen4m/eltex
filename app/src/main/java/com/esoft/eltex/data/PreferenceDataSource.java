@@ -9,7 +9,7 @@ public class PreferenceDataSource {
 
     private static SharedPreferences settings = null;
     private static SharedPreferences.Editor editor = null;
-    private Context context;
+    private final Context context;
 
     public PreferenceDataSource(Context context){
         this.context = context;
