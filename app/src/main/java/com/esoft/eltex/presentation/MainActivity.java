@@ -59,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
                 case "401":
                     Toast.makeText(this, "Ошибка аутентификации", Toast.LENGTH_SHORT).show();
                     preferenceDataSource.clearPref();
-                    navController.navigate(R.id.action_loginFragment_to_detailInfoFragment);
+                    if (navController.getCurrentDestination().getId() == R.id.detailInfoFragment) {
+                        navController.navigate(R.id.action_detailInfoFragment_to_loginFragment);
+                    }
                     break;
                 case "404":
                     Toast.makeText(this, "Данные не найдены", Toast.LENGTH_SHORT).show();
