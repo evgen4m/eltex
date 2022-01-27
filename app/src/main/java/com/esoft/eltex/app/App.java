@@ -32,7 +32,8 @@ public class App extends Application {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient.Builder client = new OkHttpClient.Builder()
-                .addInterceptor(new AuthorizationInterceptor(this))
+                .addInterceptor(new AuthorizationInterceptor())
+                .addInterceptor(new AuthenticationInterceptor(this))
                 .addInterceptor(interceptor);
 
 

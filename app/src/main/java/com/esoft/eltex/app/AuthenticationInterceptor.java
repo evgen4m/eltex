@@ -1,8 +1,11 @@
 package com.esoft.eltex.app;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
+
+import com.esoft.eltex.data.PreferenceDataSource;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -12,21 +15,23 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class AuthorizationInterceptor implements Interceptor {
+public class AuthenticationInterceptor implements Interceptor {
+
+    public PreferenceDataSource preferenceDataSource;
 
     private static final String AUTHORIZATION = "Authorization";
-    private static final String BASIC = "Basic ";
-    private static final String ACP = "android-client:password";
+
+    public AuthenticationInterceptor(Context context) {
+        preferenceDataSource = new PreferenceDataSource(context);
+    }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-
-        if (request.header("No-Authentication") == null) {
-            request = request.newBuilder()
-                    .addHeader(AUTHORIZATION, BASIC + Base64.encodeToString((ACP).getBytes("UTF-8"), Base64.NO_WRAP))
-                    .build();
-        }
+        String finalToken = preferenceDataSource.getPrefString("tokenType") + preferenceDataSource.getPrefString("token");
+        request = request.newBuilder()
+                .addHeader(AUTHORIZATION, finalToken)
+                .build();
 
         Response response = chain.proceed(request);
         new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -52,4 +57,3 @@ public class AuthorizationInterceptor implements Interceptor {
         return response;
     }
 }
-
