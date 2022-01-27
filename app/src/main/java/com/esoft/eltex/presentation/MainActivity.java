@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         String token = preferenceDataSource.getPrefString("token");
         if (token != null) {
-            if(navController.getCurrentDestination().getId() == R.id.loginFragment) {
+            if (navController.getCurrentDestination().getId() == R.id.loginFragment) {
                 navController.navigate(R.id.action_loginFragment_to_detailInfoFragment);
             }
         }
@@ -52,16 +52,14 @@ public class MainActivity extends AppCompatActivity {
             switch (event.message) {
                 case "200":
                     Toast.makeText(this, "Успешная аутентификация", Toast.LENGTH_SHORT).show();
-                    if(navController.getCurrentDestination().getId() == R.id.loginFragment) {
+                    if (navController.getCurrentDestination().getId() == R.id.loginFragment) {
                         navController.navigate(R.id.action_loginFragment_to_detailInfoFragment);
                     }
                     break;
                 case "401":
                     Toast.makeText(this, "Ошибка аутентификации", Toast.LENGTH_SHORT).show();
                     preferenceDataSource.clearPref();
-                    if(navController.getCurrentDestination().getId() == R.id.detailInfoFragment) {
-                        navController.navigate(R.id.action_loginFragment_to_detailInfoFragment);
-                    }
+                    navController.navigate(R.id.action_loginFragment_to_detailInfoFragment);
                     break;
                 case "404":
                     Toast.makeText(this, "Данные не найдены", Toast.LENGTH_SHORT).show();
